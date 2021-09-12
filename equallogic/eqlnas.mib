@@ -1,4 +1,4 @@
--- Mib files packaged on  Wed Mar 12 10:59:55 EDT 2014 for Storage Array Firmware V7.0.3 (R387053)
+-- Mib files packaged on  Tue Mar 17 11:28:59 EDT 2015 for Storage Array Firmware V7.1.5 (R408054)
 
 --  These are from draft-ietf-ops-rfc2851-update-00.txt  
 --  You will have to work out the details with your own  
@@ -22,7 +22,7 @@ IMPORTS
        FROM EQLVOLUME-MIB;
 
 eqlNASModule MODULE-IDENTITY      
-	LAST-UPDATED "201403121459Z"
+	LAST-UPDATED "201503171528Z"
     ORGANIZATION  "EqualLogic Inc."
     CONTACT-INFO      
         "Contact: Customer Support
@@ -3743,7 +3743,7 @@ eqlNASClusterUpdateTable OBJECT-TYPE
     SYNTAX          SEQUENCE OF EqlNASClusterUpdateEntry
     MAX-ACCESS      not-accessible      
     STATUS          current      
-    DESCRIPTION     "EqualLogic-Dynamic table to update NAS Cluster Firmware.
+    DESCRIPTION     "EqualLogic-Dynamic(semi) table to update NAS Cluster Firmware.
                      TimeoutAll:60"
     ::=    { eqlNASObjects 23 }     
 

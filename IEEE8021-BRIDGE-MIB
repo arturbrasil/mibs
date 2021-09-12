@@ -27,7 +27,7 @@ IMPORTS
     ;
 
 ieee8021BridgeMib MODULE-IDENTITY
-    LAST-UPDATED "201202150000Z" -- February 15, 2012
+    LAST-UPDATED "201208100000Z" -- August 10, 2012
     ORGANIZATION "IEEE 802.1 Working Group"
     CONTACT-INFO
         "  WG-URL: http://grouper.ieee.org/groups/802/1/index.html
@@ -54,6 +54,11 @@ ieee8021BridgeMib MODULE-IDENTITY
         This version of this MIB module is part of IEEE802.1Q;
         see the draft itself for full legal notices."
         
+    REVISION     "201208100000Z" -- August 10, 2012
+    DESCRIPTION  "Added an enumeration for tComponent in
+                  ieee8021BridgeBaseComponentType
+                  as part of IEEE Std 802.1Q Cor-2."
+                  
     REVISION     "201202150000Z" -- February 15, 2012
     DESCRIPTION  "Extended ieee8021BridgeBaseComponentType to 
                   include erComponent and 
@@ -207,7 +212,8 @@ ieee8021BridgeBaseComponentType OBJECT-TYPE
                     cVlanComponent(3),
                     sVlanComponent(4),
                     dBridgeComponent(5),
-                    erComponent (6)
+                    erComponent (6),
+                    tComponent (7)
                 }
     MAX-ACCESS  read-create
     STATUS      current
@@ -234,6 +240,8 @@ ieee8021BridgeBaseComponentType OBJECT-TYPE
                 802.1D bridge.
             
             erComponent (6) - An Edge Relay component of an EVB Station.
+
+            tComponent (7) - A TPMR component in a Backbone Edge Bridge.
 
         This object may not be modified while the corresponding
         instance of ieee8021BridgeBaseRowStatus is active(1).
@@ -654,7 +662,7 @@ ieee8021BridgeBasePortAdminPointToPoint OBJECT-TYPE
          Default Backbone Destination parameter is modified by
          the subsequent M_UNITDATA.indications as specified in
          6.10.1 (and described in 26.4.1).  Whenever the parameter
-         is set to ForceFalse(2) or auto(3), the value for the
+         is set to forceFalse(2) or auto(3), the value for the
          Default Backbone Destination parameter is set to the
          Backbone Service Instance Group Address for the VIP-ISID. 
 
@@ -676,7 +684,7 @@ ieee8021BridgeBasePortOperPointToPoint OBJECT-TYPE
          If adminPointToPointMAC is set to auto(2), then the value
          of operPointToPointMAC is determined in accordance with the
          specific procedures defined for the MAC entity concerned,
-         as defined in 6.5 of IEEE 802.1w.  The value is
+         as defined in 6.7.  The value is
          determined dynamically; that is, it is re-evaluated whenever
          the value of adminPointToPointMAC changes, and whenever
          the specific procedures defined for the MAC entity evaluate
@@ -687,7 +695,7 @@ ieee8021BridgeBasePortOperPointToPoint OBJECT-TYPE
          The value will be true(1) if that object is forceTrue(1), and
          the value will be false(2) if the value of that object is either
          forceFalse(2) or auto(3)."
-    REFERENCE   "6.6.3, 6.10, 12.8.2.1.3 p), 12.8.2.3.2 f), 26.4.1"
+    REFERENCE   "6.6.3, 6.7, 6.10, 12.8.2.1.3 p), 12.8.2.3.2 f), 26.4.1"
     ::= { ieee8021BridgeBasePortEntry 11 }
 
 ieee8021BridgeBasePortName OBJECT-TYPE
@@ -816,7 +824,7 @@ ieee8021BridgePhyMacAddress OBJECT-TYPE
    SYNTAX      MacAddress
    MAX-ACCESS  read-only
    STATUS      current
-   DESCRIPTION  "The mac address"
+   DESCRIPTION  "The MAC address"
    ::= { ieee8021BridgePhyPortEntry 3 }
 
 ieee8021BridgePhyPortToComponentId OBJECT-TYPE
@@ -857,7 +865,7 @@ ieee8021BridgeTpPortTable OBJECT-TYPE
     DESCRIPTION
         "A table that contains information about every port that
         is associated with this transparent bridge."
-    REFERENCE   "12.4.2, C.4"
+    REFERENCE   "12.4.2"
     ::= { ieee8021BridgeTp 1 }
 
 ieee8021BridgeTpPortEntry OBJECT-TYPE
@@ -1095,7 +1103,7 @@ ieee8021BridgePortServiceAccessPrioritySelection OBJECT-TYPE
     MAX-ACCESS  read-write
     STATUS      current
     DESCRIPTION
-        "Indication of if the Service Access Priority Selection
+        "Indication of whether the Service Access Priority Selection
         function is supported on the Customer Bridge Port to request
         priority handling of the frame from a Port-based service
         interface."
@@ -1173,7 +1181,7 @@ ieee8021BridgeTrafficClassTable OBJECT-TYPE
         "A table mapping evaluated User Priority to Traffic
         Class, for forwarding by the bridge.  Traffic class is a
         number in the range (0..(ieee8021BridgePortNumTrafficClasses-1))."
-    REFERENCE   "Table 8-3"
+    REFERENCE   "Table 8-4"
     ::= { ieee8021BridgePriority 3 }
 
 ieee8021BridgeTrafficClassEntry OBJECT-TYPE
@@ -1235,9 +1243,8 @@ ieee8021BridgePortOutboundAccessPriorityTable OBJECT-TYPE
     DESCRIPTION
         "A table mapping Regenerated User Priority to Outbound
         Access Priority.  This is a fixed mapping for all port
-        types, with two options for 802.5 Token Ring, and three
-        options for 802.17 RPR."
-    REFERENCE   "Table 8-3"
+        types, with three options for 802.17 RPR."
+    REFERENCE   "6.6.1 and 6.7.3"
     ::= { ieee8021BridgePriority 4 }
 
 ieee8021BridgePortOutboundAccessPriorityEntry OBJECT-TYPE
@@ -2263,7 +2270,7 @@ ieee8021BridgePriorityAndMulticastFilteringCompliance MODULE-COMPLIANCE
             "This group is mandatory only for devices supporting
             the priority forwarding operations defined by IEEE 802.1D
             and that have interface media types that support
-            native User Priority, e.g., IEEE 802.5."
+            native User Priority, e.g., IEEE 802.17."
 
         GROUP       ieee8021BridgePriorityGroup
         DESCRIPTION
@@ -2275,7 +2282,7 @@ ieee8021BridgePriorityAndMulticastFilteringCompliance MODULE-COMPLIANCE
             "This group is optional and is relevant only for devices
             supporting the priority forwarding operations defined by
             IEEE 802.1D and that have interface media types that
-            support native Access Priority, e.g., IEEE 802.5."
+            support native Access Priority, e.g., IEEE 802.17."
 
         GROUP       ieee8021BridgePortMrpGroup
         DESCRIPTION
